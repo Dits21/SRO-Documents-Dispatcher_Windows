@@ -1,0 +1,444 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Process" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:njl="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:snm="clr-namespace:System.Net.Mail;assembly=System" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property sap2010:Annotation.AnnotationText="Transaction item to be processed." Name="in_TransactionItem" Type="InArgument(sd:DataRow)" />
+    <x:Property sap2010:Annotation.AnnotationText="Dictionary structure to store configuration data of the process (settings, constants and assets)." Name="in_Config" Type="InArgument(scg:Dictionary(x:String, x:Object))" />
+    <x:Property Name="in_diccReglasNegocios" Type="InArgument(scg:Dictionary(x:String, sd:DataTable))" />
+    <x:Property Name="MailReject" Type="InOutArgument(scg:List(snm:MailMessage))" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>670,4700</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>ProcessTransaction_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="35">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>Newtonsoft.Json.Linq</x:String>
+      <x:String>Newtonsoft.Json</x:String>
+      <x:String>System.Dynamic</x:String>
+      <x:String>System.Collections.Specialized</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>UiPath.DataTableUtilities</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>Newtonsoft.Json</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>UiPath.UIAutomationCore</AssemblyReference>
+      <AssemblyReference>UiPath.OCR.Activities.Design</AssemblyReference>
+      <AssemblyReference>Microsoft.Extensions.DependencyModel</AssemblyReference>
+      <AssemblyReference>UiPath.Word</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="680,4635" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="njl:JObject" Name="TransactionJSON" />
+      <Variable x:TypeArguments="x:Int32" Name="MailIndex" />
+      <Variable x:TypeArguments="x:Int32" Name="CountList" />
+      <Variable x:TypeArguments="x:Int32" Default="0" Name="ContArchivos" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:Comment DisplayName="Comment (placeholder)" sap:VirtualizedContainerService.HintSize="638,55" sap2010:WorkflowViewState.IdRef="Comment_1" Text="//  Invoke steps of the process" />
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Crear TransactionJSON workflow" sap:VirtualizedContainerService.HintSize="638,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Background\Crear TransactionJSON.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="Config">[in_Config]</InArgument>
+        <OutArgument x:TypeArguments="njl:JObject" x:Key="TransactionJSON">[TransactionJSON]</OutArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="CodigoReclamo">[in_TransactionItem("CodigoReclamo").ToString]</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="RemitenteOriginal">[in_TransactionItem("RemitenteOriginal").ToString]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+    <ui:ForEach x:TypeArguments="snm:MailMessage" CurrentIndex="[MailIndex]" DisplayName="Por cada correo en el transaction" sap:VirtualizedContainerService.HintSize="638,4072" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[CType(in_TransactionItem(&quot;Mails&quot;),System.Collections.Generic.List(Of System.Net.Mail.MailMessage))]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="snm:MailMessage">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="snm:MailMessage" Name="Mail" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Body per Mail" sap:VirtualizedContainerService.HintSize="602,3948" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="sd:DataTable" Name="ImgDT" />
+              <Variable x:TypeArguments="x:String" Name="Sufijo" />
+              <Variable x:TypeArguments="x:Int32" Name="ImgIndex" />
+              <Variable x:TypeArguments="x:String" Name="JPGname" />
+              <Variable x:TypeArguments="x:String" Name="Path_PDF" />
+              <Variable x:TypeArguments="x:Boolean" Default="False" Name="right" />
+              <Variable x:TypeArguments="x:Boolean" Default="False" Name="left" />
+              <Variable x:TypeArguments="x:Boolean" Default="False" Name="front" />
+              <Variable x:TypeArguments="x:Boolean" Default="False" Name="back" />
+              <Variable x:TypeArguments="x:String" Name="PDFPathLados" />
+            </Sequence.Variables>
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Borrar Carpertas Temp workflow" sap:VirtualizedContainerService.HintSize="560,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_9" UnSafe="False" WorkflowFileName="Background\conversiónFormato\Borrar Carpertas Temp.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="TempFolder">[in_Config("ArchivosDescargados_Folder").ToString]</InArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Extraer Sufijo workflow" sap:VirtualizedContainerService.HintSize="560,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Background\Extraer Sufijo.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="x:String" x:Key="Subject">[Mail.Subject]</InArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="Body">[Mail.Headers(“HTMLBody”)]</InArgument>
+                <OutArgument x:TypeArguments="x:String" x:Key="Sufijo">[Sufijo]</OutArgument>
+                <InArgument x:TypeArguments="x:String" x:Key="CodigoReclamo">[in_TransactionItem("CodigoReclamo").ToString]</InArgument>
+                <InOutArgument x:TypeArguments="scg:List(snm:MailMessage)" x:Key="MailReject">[MailReject]</InOutArgument>
+                <InArgument x:TypeArguments="snm:MailMessage" x:Key="Mail">[Mail]</InArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Descargar Imagenes de Correo workflow" sap:VirtualizedContainerService.HintSize="560,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Background\Descargar Imagenes de Correo.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <InArgument x:TypeArguments="snm:MailMessage" x:Key="Mail">[Mail]</InArgument>
+                <OutArgument x:TypeArguments="sd:DataTable" x:Key="ImgDT">[ImgDT]</OutArgument>
+                <InArgument x:TypeArguments="x:Int32" x:Key="index_correo">[MailIndex]</InArgument>
+                <InOutArgument x:TypeArguments="scg:List(snm:MailMessage)" x:Key="MailReject">[MailReject]</InOutArgument>
+                <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">[in_Config]</InArgument>
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+            <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="[ImgIndex]" DataTable="[ImgDT]" DisplayName="For Each Row in Data Table" sap:VirtualizedContainerService.HintSize="560,3078" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+              <ui:ForEachRow.Body>
+                <ActivityAction x:TypeArguments="sd:DataRow">
+                  <ActivityAction.Argument>
+                    <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                  </ActivityAction.Argument>
+                  <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="526,2958" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                    <Sequence.Variables>
+                      <Variable x:TypeArguments="x:String" Name="SBReference" />
+                      <Variable x:TypeArguments="x:String" Name="Categoria" />
+                      <Variable x:TypeArguments="x:String" Name="Path_archivo" />
+                      <Variable x:TypeArguments="x:String" Name="RutaDestino" />
+                      <Variable x:TypeArguments="x:Boolean" Name="PDF_creado" />
+                      <Variable x:TypeArguments="x:Boolean" Name="exist4lados" />
+                    </Sequence.Variables>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="484,1328" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+                      <TryCatch.Try>
+                        <Sequence sap:VirtualizedContainerService.HintSize="376,1079" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Assign sap2010:Annotation.AnnotationText="no se si es un bug o que pero lo queria mandar asi directo desde el invoke y no lo reconocia como string.&#xA;&#xA;PD.: si ya se que se puede enviar la ruta completa al DT, pero son muchos codigos y hay que cambiar muchos add de diferentes personas asi que lo deje asi, no deberia afectar, si el rendimiento se ve perjudicado lo cambio despues...&#xA;" DisplayName="recuperar ruta." sap:VirtualizedContainerService.HintSize="334,237" sap2010:WorkflowViewState.IdRef="Assign_1">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[Path_archivo]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[path.Combine(row(2).ToString,row(0).ToString)]</InArgument>
+                            </Assign.Value>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </Assign>
+                          <Assign DisplayName="Assign ruta destino de archivo" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[RutaDestino]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[row(2).ToString]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Renombrar Imagen workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_10" UnSafe="False" WorkflowFileName="Background\Renombrar Imagen.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InOutArgument x:TypeArguments="x:String" x:Key="ImgPath">[Path_archivo]</InOutArgument>
+                              <InArgument x:TypeArguments="x:Int32" x:Key="index_correo">[MailIndex]</InArgument>
+                              <InArgument x:TypeArguments="x:Int32" x:Key="index_archivo">[ImgIndex]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Sufijo">[Sufijo]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="CodigoReclamo">[in_TransactionItem("CodigoReclamo").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="RutaDestino">[RutaDestino]</InArgument>
+                              <OutArgument x:TypeArguments="x:String" x:Key="JPGName">[JPGname]</OutArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                          </ui:InvokeWorkflowFile>
+                          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Verificar Tamaño workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_13" UnSafe="False" WorkflowFileName="Background\Verificar Tamaño.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="Imagen_Path">[Path_archivo]</InArgument>
+                              <InArgument x:TypeArguments="sd:DataTable" x:Key="Medidas">[in_diccReglasNegocios("TamañoImagen")]</InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                          </ui:InvokeWorkflowFile>
+                          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="en espera de la IA&#xA;" DisplayName="Invoke Procesar ML Model workflow" sap:VirtualizedContainerService.HintSize="334,154" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_5" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Background\Procesar ML Model.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="ImgPath">[Path_archivo]</InArgument>
+                              <OutArgument x:TypeArguments="x:String" x:Key="Categoria">[Categoria]</OutArgument>
+                              <InArgument x:TypeArguments="x:Int32" x:Key="ImgIndex">[ImgIndex]</InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                            <sap:WorkflowViewStateService.ViewState>
+                              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                              </scg:Dictionary>
+                            </sap:WorkflowViewStateService.ViewState>
+                          </ui:InvokeWorkflowFile>
+                          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Img to PDF workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_11" UnSafe="False" WorkflowFileName="Background\Img to PDF.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="ImgPath">
+                                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Path_archivo" />
+                              </InArgument>
+                              <OutArgument x:TypeArguments="x:String" x:Key="PDFPath">
+                                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Path_PDF" />
+                              </OutArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Categoria">
+                                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="Categoria" />
+                              </InArgument>
+                              <InOutArgument x:TypeArguments="x:String" x:Key="JPG_name">
+                                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="JPGname" />
+                              </InOutArgument>
+                              <OutArgument x:TypeArguments="x:Boolean" x:Key="Band">
+                                <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="PDF_creado" />
+                              </OutArgument>
+                              <InOutArgument x:TypeArguments="x:Boolean" x:Key="back">
+                                <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="back" />
+                              </InOutArgument>
+                              <InOutArgument x:TypeArguments="x:Boolean" x:Key="left">
+                                <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="left" />
+                              </InOutArgument>
+                              <InOutArgument x:TypeArguments="x:Boolean" x:Key="front">
+                                <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="front" />
+                              </InOutArgument>
+                              <InOutArgument x:TypeArguments="x:Boolean" x:Key="right">
+                                <mva:VisualBasicReference x:TypeArguments="x:Boolean" ExpressionText="right" />
+                              </InOutArgument>
+                              <OutArgument x:TypeArguments="x:String" x:Key="PDFPathLados">
+                                <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="PDFPathLados" />
+                              </OutArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="in_rutaPDF">
+                                <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Config(&quot;PDFFolder&quot;).ToString" />
+                              </InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                          </ui:InvokeWorkflowFile>
+                        </Sequence>
+                      </TryCatch.Try>
+                      <TryCatch.Catches>
+                        <Catch x:TypeArguments="ui:BusinessRuleException" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <ActivityAction x:TypeArguments="ui:BusinessRuleException">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="ui:BusinessRuleException" Name="exception" />
+                            </ActivityAction.Argument>
+                            <ui:Continue sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Continue_1" />
+                          </ActivityAction>
+                        </Catch>
+                        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,21" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <ActivityAction x:TypeArguments="s:Exception">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+                            </ActivityAction.Argument>
+                            <ui:Continue sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Continue_2" />
+                          </ActivityAction>
+                        </Catch>
+                      </TryCatch.Catches>
+                    </TryCatch>
+                    <If Condition="[PDF_creado]" DisplayName="if el pdf se creo/si no se creo es parte de categoria de 4 lados" sap:VirtualizedContainerService.HintSize="484,643" sap2010:WorkflowViewState.IdRef="If_1">
+                      <If.Then>
+                        <Sequence sap:VirtualizedContainerService.HintSize="421,456" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Assign DisplayName="Conteo de PDFProcesados" sap:VirtualizedContainerService.HintSize="379,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Int32">[ContArchivos]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Int32">[ContArchivos+1]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Subir File a Storage Bucket workflow" sap:VirtualizedContainerService.HintSize="379,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_6" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Background\Subir File a Storage Bucket.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="PDFPath">[Path_PDF]</InArgument>
+                              <OutArgument x:TypeArguments="x:String" x:Key="SBReference">[SBReference]</OutArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="SB">[in_Config("Orchestrador_SB").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Orch_Folder">[in_Config("Ochestrator_MailCredentialsFolder").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Name">[JPGname]</InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                          </ui:InvokeWorkflowFile>
+                          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Añadir valores de Img a TransactionJSON workflow" sap:VirtualizedContainerService.HintSize="379,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_7" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Background\Añadir valores de Img a TransactionJSON.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="SBReference">[SBReference]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Sufijo">[Sufijo]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Categoria">[Categoria]</InArgument>
+                              <InOutArgument x:TypeArguments="njl:JObject" x:Key="TransactionJSON">[TransactionJSON]</InOutArgument>
+                              <InArgument x:TypeArguments="x:Int32" x:Key="Contador">[ContArchivos]</InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                          </ui:InvokeWorkflowFile>
+                        </Sequence>
+                      </If.Then>
+                      <If.Else>
+                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_5">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </Sequence>
+                      </If.Else>
+                    </If>
+                    <ui:FileExistsX DisplayName="File Exists" Exists="[exist4lados]" sap:VirtualizedContainerService.HintSize="484,132" sap2010:WorkflowViewState.IdRef="FileExistsX_1" Path="[PDFPathLados]" />
+                    <If Condition="[exist4lados]" sap:VirtualizedContainerService.HintSize="484,643" sap2010:WorkflowViewState.IdRef="If_2">
+                      <If.Then>
+                        <Sequence sap:VirtualizedContainerService.HintSize="421,456" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Assign DisplayName="Conteo de PDFProcesados" sap:VirtualizedContainerService.HintSize="379,60" sap2010:WorkflowViewState.IdRef="Assign_5">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Int32">[ContArchivos]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Int32">[ContArchivos+1]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Subir File a Storage Bucket workflow" sap:VirtualizedContainerService.HintSize="379,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_14" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Background\Subir File a Storage Bucket.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="PDFPath">[PDFPathLados]</InArgument>
+                              <OutArgument x:TypeArguments="x:String" x:Key="SBReference">[SBReference]</OutArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="SB">[in_Config("Orchestrador_SB").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Orch_Folder">[in_Config("Ochestrator_MailCredentialsFolder").ToString]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Name">[JPGname]</InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                          </ui:InvokeWorkflowFile>
+                          <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Añadir valores de Img a TransactionJSON workflow" sap:VirtualizedContainerService.HintSize="379,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_15" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Background\Añadir valores de Img a TransactionJSON.xaml">
+                            <ui:InvokeWorkflowFile.Arguments>
+                              <InArgument x:TypeArguments="x:String" x:Key="SBReference">[SBReference]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Sufijo">[Sufijo]</InArgument>
+                              <InArgument x:TypeArguments="x:String" x:Key="Categoria">[Categoria]</InArgument>
+                              <InOutArgument x:TypeArguments="njl:JObject" x:Key="TransactionJSON">[TransactionJSON]</InOutArgument>
+                              <InArgument x:TypeArguments="x:Int32" x:Key="Contador">[ContArchivos]</InArgument>
+                            </ui:InvokeWorkflowFile.Arguments>
+                          </ui:InvokeWorkflowFile>
+                        </Sequence>
+                      </If.Then>
+                      <If.Else>
+                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_9">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </Sequence>
+                      </If.Else>
+                    </If>
+                  </Sequence>
+                </ActivityAction>
+              </ui:ForEachRow.Body>
+            </ui:ForEachRow>
+            <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="560,282" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+              <ui:CommentOut.Body>
+                <Sequence DisplayName="Ignored Activities" sap:VirtualizedContainerService.HintSize="376,204" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke MoverMailMessage workflow" sap:VirtualizedContainerService.HintSize="334,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_12" UnSafe="False" WorkflowFileName="Background\MoverMailMessage.xaml">
+                    <ui:InvokeWorkflowFile.Arguments>
+                      <InArgument x:TypeArguments="x:Boolean" x:Key="Fallido">False</InArgument>
+                      <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="Config">[in_Config]</InArgument>
+                      <InArgument x:TypeArguments="snm:MailMessage" x:Key="Mail">[Mail]</InArgument>
+                    </ui:InvokeWorkflowFile.Arguments>
+                  </ui:InvokeWorkflowFile>
+                </Sequence>
+              </ui:CommentOut.Body>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:CommentOut>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          <x:Boolean x:Key="IsPinned">False</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:ForEach>
+    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke Crear TransactionItem en Queue workflow" sap:VirtualizedContainerService.HintSize="638,112" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_8" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="Background\Crear TransactionItem en Queue.xaml">
+      <ui:InvokeWorkflowFile.Arguments>
+        <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="Config">[in_Config]</InArgument>
+        <InArgument x:TypeArguments="njl:JObject" x:Key="TransactionJSON">[TransactionJSON]</InArgument>
+      </ui:InvokeWorkflowFile.Arguments>
+    </ui:InvokeWorkflowFile>
+  </Sequence>
+</Activity>
